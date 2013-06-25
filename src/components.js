@@ -145,7 +145,7 @@ function Base(x,y,sp)
 	this.move = function()
 	{
 		if (this.depot > 5
-			&& w.count ('Worker', this.xtype.color) < 5)
+			&& w.count ('Worker', this.xtype.color) < 10)
 		{
 			new Worker(x-2, y+5, this.xtype.color);
 			this.depot -= 5;

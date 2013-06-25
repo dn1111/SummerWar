@@ -26,9 +26,9 @@ function findNextRes(xPos,yPos,worker)
 					&& (w.objects[i].xtype.worker == worker))))
 		{
 			if (res == 0)
+			{
 				res = w.objects[i];
-
-			else if (Math.round(getDistance(xPos,yPos,
+			} else if (Math.round(getDistance(xPos,yPos,
 						w.objects[i].xtype.x,w.objects[i].xtype.y))
 				< Math.round(getDistance(xPos,yPos,
 					res.xtype.x,res.xtype.y)))
@@ -36,9 +36,10 @@ function findNextRes(xPos,yPos,worker)
 				res = w.objects[i];
 				w.objects[i].xtype.occupied = true;
 				w.objects[i].xtype.worker = worker;
-			}			
+			}
 		}
 	}
+	
 	return res;
 }
 

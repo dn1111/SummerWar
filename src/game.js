@@ -34,7 +34,7 @@ renderWorld = function()
 	for (var j=0; j<spliceArray.length;j++)
 		w.objects.splice(spliceArray[j],1);
 
-	renderTimer = setTimeout('renderWorld()',5);
+	renderTimer = setTimeout('renderWorld()',2);
 }
 
 play = function()
@@ -52,7 +52,7 @@ play = function()
 		gameOver();
 	}
 
-	playTimer = setTimeout('play()',5);
+	playTimer = setTimeout('play()',2);
 }
 
 gameOver = function()
