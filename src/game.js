@@ -5,6 +5,7 @@ renderWorld = function()
 
 	objectCount = w.objects.length;
 	ctx.clearRect(0,0,c.width,c.height);
+
 	var i=0;
 	while (i < objectCount)
 	{
@@ -16,25 +17,58 @@ renderWorld = function()
 	}
 	for (var j=0; j<spliceArray.length;j++)
 		w.objects.splice(spliceArray[j],1);
-	setTimeout('renderWorld()',50);
+
+	renderTimer = setTimeout('renderWorld()',20);
+}
+
+play = function()
+{
+	w.blue.checkBankrupt();
+	w.red.checkBankrupt();
+
+	if (w.blue.lost)
+	{
+		//alert("Red wins!");
+		gameOver();
+	} else if (w.red.lost)
+	{
+		//alert("Blue wins!");
+		gameOver();
+	}
+
+	playTimer = setTimeout('play()',20);
+}
+
+gameOver = function()
+{
+	clearTimeout(renderTimer);
+	clearTimeout(playTimer);
+	newGame();
 }
 
 //load the fucking game
-window.onload=function()
+newGame = function()
 {
-	c = document.getElementById('c');
+	c = document.getElementById('canvas');
 	ctx = c.getContext('2d');
 
 	w = new World();
 
-	new Base(r1(800,2), r1(500,2), blue);
-	new Base(r1(800,2), r1(500,2), red);
+	w.blue = new Base(r1(800,2), r1(500,2), 'blue');
+	w.red  = new Base(r1(800,2), r1(500,2), 'red');
 
 	//resources, randomly placed
-	for (i=1; i<41;i++)
+	for (i=1; i<50;i++)
 	{
 		new Resource(r1(800,2), r1(500,2), 'green');
 	}
 
+	//timer
+	var renderTimer;
+	var playTimer;
+
 	renderWorld();
+	play();
 }
+
+window.onload = newGame;

@@ -23,8 +23,8 @@ function World()
 	{
 		var cnt = 0;
 		for (var i=0; i<this.objects.length; i++)
-			if(this.objects[k].xtype.color == sp 
-				&& this.objects[k].type == type)
+			if(this.objects[i].xtype.color == sp 
+				&& this.objects[i].type == type)
 				cnt++;
 		return cnt;
 	}
@@ -51,19 +51,26 @@ function Worker(x,y,sp)
 			//if no resources carried, go get some
 			{
 				var coord = moveToNext( this.xtype.x, this.xtype.y,
-					'Resource', 'green', 3);
+					'Resource', 'green', 10);
 				//TODO wut?
 				if (this.xtype.x == coord[0][0]
 					&& this.xtype.y == coord[0][1])
 				{
-					this.backpack = 0;
+					this.backpack = 1;
 					coord[1].depot -= 1;
 				}
 			} else
 			//got the resource, go back to base
 			{
 				var coord = moveToNext( this.xtype.x, this.xtype.y,
-					'Base', this.xtype.color, 3);
+					'Base', this.xtype.color, 5);
+
+				if (this.xtype.x == coord[0][0]
+					&& this.xtype.y == coord[0][1])
+				{
+					this.backpack = 0;
+					coord[1].depot += 1;
+				}
 			}
 
 			//TODO wut?
@@ -103,11 +110,13 @@ function Fighter(x,y,sp)
 				fightType = 'Fighter';
 			else if (w.count('Worker', this.enemy) > 0)
 				fightType = 'Worker';
+			else if (w.count('Worker', this.enemy) <= 0)
+				fightType = 'Base';
 
 			if (fightType!='Idle')
 			{
 				var coord = moveToNext(this.xtype.x, this.xtype.y,
-					fightType, this.enemy, 1);
+					fightType, this.enemy, 7);
 				if (this.xtype.x == coord[0][0]
 					&& this.xtype.y == coord[0][1])
 					coord[1].depot -= 1;
@@ -126,31 +135,41 @@ function Fighter(x,y,sp)
 function Base(x,y,sp)
 {
 	this.type = 'Base';
-	this.depot = 11;
+	this.depot = 20;
 	this.xtype = new Obj(x,y,sp,10);
+	this.side = sp;
+	this.lost = false;
 
 	w.objects.push(this);
 
 	this.move = function()
 	{
-		if (this.depot > 10
-			&& w.count ('Worker', this.xtype.color) < 5)
+		if (this.depot > 5
+			&& w.count ('Worker', this.xtype.color) < 10)
 		{
 			new Worker(x-2, y+5, this.xtype.color);
-			this.depot -= 10;
+			this.depot -= 5;
 		} else if(this.depot > 10)
 		{
 			new Fighter(x-2, y+5, this.xtype.color);
 			this.depot -= 10;
 		}
 	}
+
+	this.checkBankrupt = function()
+	{
+		if (this.depot < 0
+			&& w.count ('Worker', this.xtype.color) == 0
+			&& w.count ('Fighter', this.xtype.color) == 0)
+			this.lost = true;
+	}
 }
 
-function Resource()
+function Resource(x,y,sp)
 {
-	this.depot = 10;
+	this.depot = 30;
 	this.type = 'Resource';
-	this.xtype = new Obj(x,y,sp,10);
+	this.xtype = new Obj(x,y,sp,5);
 
 	w.objects.push(this);
 
