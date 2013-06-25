@@ -1,6 +1,7 @@
 function moveToNext(xPos,yPos,type,color,v)
 {
 	var obj = findNext(xPos,yPos,type,color);
+	if (obj==0) return;
 	return Array(moveAlongVector(xPos, yPos,
 								obj.xtype.x, obj.xtype.y, v),obj);
 }

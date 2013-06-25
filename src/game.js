@@ -1,3 +1,7 @@
+var redScore = 0;
+var blueScore = 0;
+
+
 //draw the map
 renderWorld = function()
 {
@@ -6,6 +10,18 @@ renderWorld = function()
 	objectCount = w.objects.length;
 	ctx.clearRect(0,0,c.width,c.height);
 
+	//score board
+	ctx.font="18px Courier New";
+
+	ctx.fillStyle = "red";
+	ctx.fillText(redScore, 5, 590);
+	w.red.displayDepot();
+
+	ctx.fillStyle = "blue";
+	ctx.fillText(blueScore, 780, 590);
+	w.blue.displayDepot();
+
+	//add objects
 	var i=0;
 	while (i < objectCount)
 	{
@@ -18,7 +34,7 @@ renderWorld = function()
 	for (var j=0; j<spliceArray.length;j++)
 		w.objects.splice(spliceArray[j],1);
 
-	renderTimer = setTimeout('renderWorld()',20);
+	renderTimer = setTimeout('renderWorld()',5);
 }
 
 play = function()
@@ -28,15 +44,15 @@ play = function()
 
 	if (w.blue.lost)
 	{
-		//alert("Red wins!");
+		redScore++;
 		gameOver();
 	} else if (w.red.lost)
 	{
-		//alert("Blue wins!");
+		blueScore++;
 		gameOver();
 	}
 
-	playTimer = setTimeout('play()',20);
+	playTimer = setTimeout('play()',5);
 }
 
 gameOver = function()
@@ -51,14 +67,14 @@ newGame = function()
 {
 	c = document.getElementById('canvas');
 	ctx = c.getContext('2d');
-
+	
 	w = new World();
 
 	w.blue = new Base(r1(800,2), r1(500,2), 'blue');
 	w.red  = new Base(r1(800,2), r1(500,2), 'red');
 
 	//resources, randomly placed
-	for (i=1; i<50;i++)
+	for (i=1; i<100;i++)
 	{
 		new Resource(r1(800,2), r1(500,2), 'green');
 	}

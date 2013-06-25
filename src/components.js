@@ -52,7 +52,7 @@ function Worker(x,y,sp)
 			{
 				var coord = moveToNext( this.xtype.x, this.xtype.y,
 					'Resource', 'green', 10);
-				//TODO wut?
+				//TODO if the resource is 'full', find another
 				if (this.xtype.x == coord[0][0]
 					&& this.xtype.y == coord[0][1])
 				{
@@ -73,12 +73,10 @@ function Worker(x,y,sp)
 				}
 			}
 
-			//TODO wut?
 			this.xtype.x = coord[0][0];
 			this.xtype.y = coord[0][1];
 		} else
 		{
-			//TODO wut?
 			this.xtype.size = 3;
 			this.xtype.color = 'yellow';
 		}
@@ -105,18 +103,20 @@ function Fighter(x,y,sp)
 		var fightType = 'Idle';
 		if (this.depot > 0)
 		{
-			//if the enemy has troops, kill them
+			//if the enemy has troops, kill them!
 			if (w.count('Fighter', this.enemy) > 0)
 				fightType = 'Fighter';
+			//nothing can stop you from killing their peasants!
 			else if (w.count('Worker', this.enemy) > 0)
 				fightType = 'Worker';
+			//noone left to kill, raid their base!
 			else if (w.count('Worker', this.enemy) <= 0)
 				fightType = 'Base';
 
 			if (fightType!='Idle')
 			{
 				var coord = moveToNext(this.xtype.x, this.xtype.y,
-					fightType, this.enemy, 7);
+					fightType, this.enemy, 3);
 				if (this.xtype.x == coord[0][0]
 					&& this.xtype.y == coord[0][1])
 					coord[1].depot -= 1;
@@ -145,14 +145,14 @@ function Base(x,y,sp)
 	this.move = function()
 	{
 		if (this.depot > 5
-			&& w.count ('Worker', this.xtype.color) < 10)
+			&& w.count ('Worker', this.xtype.color) < 5)
 		{
 			new Worker(x-2, y+5, this.xtype.color);
 			this.depot -= 5;
-		} else if(this.depot > 10)
+		} else if(this.depot > 20)
 		{
 			new Fighter(x-2, y+5, this.xtype.color);
-			this.depot -= 10;
+			this.depot -= 20;
 		}
 	}
 
@@ -162,6 +162,18 @@ function Base(x,y,sp)
 			&& w.count ('Worker', this.xtype.color) == 0
 			&& w.count ('Fighter', this.xtype.color) == 0)
 			this.lost = true;
+	}
+
+	this.displayDepot = function()
+	{
+		ctx.font="18px Courier New";
+		if (this.xtype.color == 'red')
+		{
+			ctx.fillText(this.depot, 5, 570);
+		} else if (this.xtype.color == 'blue')
+		{
+			ctx.fillText(this.depot, 770, 570);
+		}
 	}
 }
 
