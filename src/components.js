@@ -50,8 +50,8 @@ function Worker(x,y,sp)
 			if (this.backpack == 0)
 			//if no resources carried, go get some
 			{
-				var coord = moveToNextResource( this.xtype.x, this.xtype.y,
-					false, 10);
+				var coord = moveToNextResource(this.xtype.x, this.xtype.y,
+												this,10);
 				//TODO if the resource is 'full', find another
 				if (this.xtype.x == coord[0][0]
 					&& this.xtype.y == coord[0][1])
@@ -62,7 +62,7 @@ function Worker(x,y,sp)
 			} else
 			//got the resource, go back to base
 			{
-				var coord = moveToNext( this.xtype.x, this.xtype.y,
+				var coord = moveToNext(this.xtype.x, this.xtype.y,
 					'Base', this.xtype.color, 5);
 
 				if (this.xtype.x == coord[0][0]
@@ -135,7 +135,7 @@ function Fighter(x,y,sp)
 function Base(x,y,sp)
 {
 	this.type = 'Base';
-	this.depot = 20;
+	this.depot = 15;
 	this.xtype = new Obj(x,y,sp,10);
 	this.side = sp;
 	this.lost = false;
@@ -149,10 +149,10 @@ function Base(x,y,sp)
 		{
 			new Worker(x-2, y+5, this.xtype.color);
 			this.depot -= 5;
-		} else if(this.depot > 20)
+		} else if(this.depot > 30)
 		{
 			new Fighter(x-2, y+5, this.xtype.color);
-			this.depot -= 20;
+			this.depot -= 30;
 		}
 	}
 
@@ -183,9 +183,9 @@ function Resource(x,y,sp)
 	this.type = 'Resource';
 	this.xtype = new Obj(x,y,sp,5);
 	//each resource can only support 1 workers
-	this.max = 1;
-	//full or not
-	this.full = false;
+	this.occupied = false;
+	//the worker that this resource is bound to
+	this.worker = 0;
 
 	w.objects.push(this);
 

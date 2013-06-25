@@ -18,7 +18,7 @@ renderWorld = function()
 	w.red.displayDepot();
 
 	ctx.fillStyle = "blue";
-	ctx.fillText(blueScore, 780, 590);
+	ctx.fillText(blueScore, 775, 590);
 	w.blue.displayDepot();
 
 	//add objects
@@ -74,7 +74,7 @@ newGame = function()
 	w.red  = new Base(r1(800,2), r1(500,2), 'red');
 
 	//resources, randomly placed
-	for (i=1; i<100;i++)
+	for (i=1; i<200;i++)
 	{
 		new Resource(r1(800,2), r1(500,2), 'green');
 	}

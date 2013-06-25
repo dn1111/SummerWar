@@ -6,14 +6,41 @@ function moveToNext(xPos,yPos,type,color,v)
 								obj.xtype.x, obj.xtype.y, v),obj);
 }
 
-function moveToNextResource(xPos,yPos,full,v)
+function moveToNextResource(xPos,yPos,worker,v)
 {
-	var obj = findNext(xPos,yPos,'Resource','green');
-	if (obj==0) return;
+	var res = findNextRes(xPos,yPos,worker);
+	if (res==0) return;
 	return Array(moveAlongVector(xPos, yPos,
-								obj.xtype.x, obj.xtype.y, v),obj);
+								res.xtype.x, res.xtype.y, v),res);
 }
 
+function findNextRes(xPos,yPos,worker)
+{
+	var res=0;
+	for (i=0;i<w.objects.length;i++)
+	{
+		if (w.objects[i].type == 'Resource'
+			&& w.objects[i].xtype.color == 'green'
+			&& (!w.objects[i].xtype.occupied 
+				|| (w.objects[i].xtype.occupied 
+					&& (w.objects[i].xtype.worker == worker))))
+		{
+			if (res == 0)
+				res = w.objects[i];
+
+			else if (Math.round(getDistance(xPos,yPos,
+						w.objects[i].xtype.x,w.objects[i].xtype.y))
+				< Math.round(getDistance(xPos,yPos,
+					res.xtype.x,res.xtype.y)))
+			{
+				res = w.objects[i];
+				w.objects[i].xtype.occupied = true;
+				w.objects[i].xtype.worker = worker;
+			}			
+		}
+	}
+	return res;
+}
 
 function findNext(xPos,yPos,type,color)
 {
