@@ -50,8 +50,8 @@ function Worker(x,y,sp)
 			if (this.backpack == 0)
 			//if no resources carried, go get some
 			{
-				var coord = moveToNext( this.xtype.x, this.xtype.y,
-					'Resource', 'green', 10);
+				var coord = moveToNextResource( this.xtype.x, this.xtype.y,
+					false, 10);
 				//TODO if the resource is 'full', find another
 				if (this.xtype.x == coord[0][0]
 					&& this.xtype.y == coord[0][1])
@@ -182,6 +182,10 @@ function Resource(x,y,sp)
 	this.depot = 30;
 	this.type = 'Resource';
 	this.xtype = new Obj(x,y,sp,5);
+	//each resource can only support 1 workers
+	this.max = 1;
+	//full or not
+	this.full = false;
 
 	w.objects.push(this);
 

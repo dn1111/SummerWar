@@ -6,6 +6,15 @@ function moveToNext(xPos,yPos,type,color,v)
 								obj.xtype.x, obj.xtype.y, v),obj);
 }
 
+function moveToNextResource(xPos,yPos,full,v)
+{
+	var obj = findNext(xPos,yPos,'Resource','green');
+	if (obj==0) return;
+	return Array(moveAlongVector(xPos, yPos,
+								obj.xtype.x, obj.xtype.y, v),obj);
+}
+
+
 function findNext(xPos,yPos,type,color)
 {
 	var obj=0;
