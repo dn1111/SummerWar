@@ -39,6 +39,8 @@ function Worker(x,y,sp)
 	this.xtype = new Obj(x,y,sp,2);
 	this.backpack = 0;
 	this.depot = 4;
+	//the binding resource field
+	this.workplace = 0;
 
 	w.objects.push(this);
 
