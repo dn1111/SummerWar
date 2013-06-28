@@ -16,10 +16,14 @@ renderWorld = function()
 	ctx.fillStyle = "red";
 	ctx.fillText(redScore, 5, 590);
 	w.red.displayDepot();
+	w.red.displayWorkingForce();
+	w.red.displayFightingForce();
 
 	ctx.fillStyle = "blue";
 	ctx.fillText(blueScore, 775, 590);
 	w.blue.displayDepot();
+	w.blue.displayWorkingForce();
+	w.blue.displayFightingForce();
 
 	//add objects
 	var i=0;

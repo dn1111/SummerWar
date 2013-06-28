@@ -177,6 +177,30 @@ function Base(x,y,sp)
 			ctx.fillText(this.depot, 770, 570);
 		}
 	}
+
+	this.displayWorkingForce = function()
+	{
+		ctx.font="18px Courier New";
+		if (this.xtype.color == 'red')
+		{
+			ctx.fillText(w.count ('Worker', 'red'), 5, 550);
+		} else if (this.xtype.color == 'blue')
+		{
+			ctx.fillText(w.count ('Worker', 'blue'), 770, 550);
+		}
+	}
+
+	this.displayFightingForce = function()
+	{
+		ctx.font="18px Courier New";
+		if (this.xtype.color == 'red')
+		{
+			ctx.fillText(w.count ('Fighter', 'red'), 5, 530);
+		} else if (this.xtype.color == 'blue')
+		{
+			ctx.fillText(w.count ('Fighter', 'blue'), 770, 530);
+		}
+	}
 }
 
 function Resource(x,y,sp)
